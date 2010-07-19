@@ -31,7 +31,7 @@ module NewRelic::IA
 
           Usage: #{File.basename($0)} [ options ] aspect, aspect.. 
 
-          aspect: one or more of 'memcached', 'iostat' or 'disk' (more to come)
+          aspect: one or more of 'memcached', 'iostat', 'disk', or 'varnish' (more to come)
         BANNER
           opts.separator ""
           opts.on("-a", "--all",
@@ -104,6 +104,13 @@ module NewRelic::IA
       require 'new_relic/ia/memcached_sampler'
       s = NewRelic::IA::MemcachedSampler.new
       s.check
+      NewRelic::Agent.instance.stats_engine.add_harvest_sampler s
+    end
+
+    def varnish
+      require 'new_relic/ia/varnish_sampler'
+      s = NewRelic::IA::VarnishSampler.new
+      # s.check
       NewRelic::Agent.instance.stats_engine.add_harvest_sampler s
     end
 
