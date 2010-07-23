@@ -110,7 +110,7 @@ module NewRelic::IA
     def varnish
       require 'new_relic/ia/varnish_sampler'
       s = NewRelic::IA::VarnishSampler.new
-      # s.check
+      s.check
       NewRelic::Agent.instance.stats_engine.add_harvest_sampler s
     end
 

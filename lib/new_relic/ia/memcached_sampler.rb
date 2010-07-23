@@ -167,6 +167,12 @@ class NewRelic::IA::MemcachedSampler < NewRelic::Agent::Sampler
           break
         end
         statistics << data
+        start_index = statistics =~ /STAT\s/
+        if start_index != 0
+          NewRelic::IA::CLI.log.warn "memcached: unexpected stats output from #{hostname_port}: #{statistics}"
+          logger.info "memcached: unable to connect to memcached node at #{hostname_port}"
+          break
+        end
         end_index = statistics =~ /\s+END\s+$/
         if end_index
           return statistics[0, end_index]
